@@ -1,0 +1,27 @@
+mutation SeedData @transaction {
+  user_insertMany(data: [
+    { email: "alice@example.com", fullName: "Alice Smith" },
+    { email: "bob@example.com", fullName: "Bob Johnson" },
+    { email: "charlie@example.com", fullName: "Charlie Davis" }
+  ])
+  category_insertMany(data: [
+    { name: "Work", colorCode: "#FF5733", user: { id: "00000000-0000-0000-0000-000000000001" } },
+    { name: "Personal", colorCode: "#33FF57", user: { id: "00000000-0000-0000-0000-000000000002" } },
+    { name: "Health", colorCode: "#3357FF", user: { id: "00000000-0000-0000-0000-000000000003" } }
+  ])
+  appointment_insertMany(data: [
+    { title: "Team Meeting", startTime: "2023-10-27T09:00:00Z", endTime: "2023-10-27T10:00:00Z", user: { id: "00000000-0000-0000-0000-000000000001" }, category: { id: "00000000-0000-0000-0000-000000000001" } },
+    { title: "Doctor Appointment", startTime: "2023-10-28T14:00:00Z", endTime: "2023-10-28T15:00:00Z", user: { id: "00000000-0000-0000-0000-000000000002" }, category: { id: "00000000-0000-0000-0000-000000000003" } },
+    { title: "Gym Session", startTime: "2023-10-29T18:00:00Z", endTime: "2023-10-29T19:30:00Z", user: { id: "00000000-0000-0000-0000-000000000003" }, category: { id: "00000000-0000-0000-0000-000000000003" } }
+  ])
+  attendee_insertMany(data: [
+    { status: "Accepted", appointment: { id: "00000000-0000-0000-0000-000000000001" }, user: { id: "00000000-0000-0000-0000-000000000001" } },
+    { status: "Pending", appointment: { id: "00000000-0000-0000-0000-000000000002" }, user: { id: "00000000-0000-0000-0000-000000000002" } },
+    { status: "Confirmed", appointment: { id: "00000000-0000-0000-0000-000000000003" }, user: { id: "00000000-0000-0000-0000-000000000003" } }
+  ])
+  reminder_insertMany(data: [
+    { triggerTime: 15, appointment: { id: "00000000-0000-0000-0000-000000000001" } },
+    { triggerTime: 30, appointment: { id: "00000000-0000-0000-0000-000000000002" } },
+    { triggerTime: 60, appointment: { id: "00000000-0000-0000-0000-000000000003" } }
+  ])
+}

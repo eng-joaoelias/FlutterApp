@@ -1,0 +1,33 @@
+type User @table {
+  email: String!
+  fullName: String!
+  avatarUrl: String
+  phoneNumber: String
+}
+
+type Category @table {
+  name: String!
+  colorCode: String!
+  user: User!
+}
+
+type Appointment @table {
+  title: String!
+  startTime: Timestamp!
+  endTime: Timestamp!
+  description: String
+  location: String
+  user: User!
+  category: Category
+}
+
+type Attendee @table {
+  appointment: Appointment!
+  user: User!
+  status: String!
+}
+
+type Reminder @table {
+  appointment: Appointment!
+  triggerTime: Int!
+}

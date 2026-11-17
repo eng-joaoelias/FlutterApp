@@ -1,0 +1,119 @@
+mutation CreateUser {
+  user_insert(data: {id_expr: "auth.uid", email: "test@example.com", fullName: "Test User"})
+}
+
+mutation UpdateUser($fullName: String) @auth(level: USER) {
+  user_update(key: {id_expr: "auth.uid"}, data: {fullName: $fullName})
+}
+
+mutation DeleteUser @auth(level: USER) {
+  user_delete(key: {id_expr: "auth.uid"})
+}
+
+query GetUser @auth(level: USER) {
+  user(key: {id_expr: "auth.uid"}) {
+    email fullName
+  }
+}
+
+query ListUsers @auth(level: PUBLIC, insecureReason: "Listing users is permitted for public directory search") {
+  users {
+    fullName
+  }
+}
+
+mutation CreateCategory($name: String!, $colorCode: String!) @auth(level: USER) {
+  category_insert(data: {name: $name, colorCode: $colorCode, user: {id_expr: "auth.uid"}})
+}
+
+mutation UpdateCategory($id: UUID!, $name: String) @auth(level: USER) {
+  category_update(key: {id: $id}, data: {name: $name})
+}
+
+mutation DeleteCategory($id: UUID!) @auth(level: USER) {
+  category_delete(key: {id: $id})
+}
+
+query GetCategory($id: UUID!) @auth(level: USER) {
+  category(id: $id) {
+    name colorCode
+  }
+}
+
+query ListCategories @auth(level: USER) {
+  categories(where: {userId: {eq_expr: "auth.uid"}}) {
+    name
+  }
+}
+
+mutation CreateAppointment($title: String!, $startTime: Timestamp!, $endTime: Timestamp!) @auth(level: USER) {
+  appointment_insert(data: {title: $title, startTime: $startTime, endTime: $endTime, user: {id_expr: "auth.uid"}})
+}
+
+mutation UpdateAppointment($id: UUID!, $title: String) @auth(level: USER) {
+  appointment_update(key: {id: $id}, data: {title: $title})
+}
+
+mutation DeleteAppointment($id: UUID!) @auth(level: USER) {
+  appointment_delete(key: {id: $id})
+}
+
+query GetAppointment($id: UUID!) @auth(level: USER) {
+  appointment(id: $id) {
+    title startTime endTime
+  }
+}
+
+query ListAppointments @auth(level: USER) {
+  appointments(where: {userId: {eq_expr: "auth.uid"}}) {
+    title
+  }
+}
+
+mutation CreateAttendee($appointmentId: UUID!, $status: String!) @auth(level: USER) {
+  attendee_insert(data: {appointmentId: $appointmentId, status: $status, user: {id_expr: "auth.uid"}})
+}
+
+mutation UpdateAttendee($id: UUID!, $status: String!) @auth(level: USER) {
+  attendee_update(key: {id: $id}, data: {status: $status})
+}
+
+mutation DeleteAttendee($id: UUID!) @auth(level: USER) {
+  attendee_delete(key: {id: $id})
+}
+
+query GetAttendee($id: UUID!) @auth(level: USER) {
+  attendee(id: $id) {
+    status
+  }
+}
+
+query ListAttendees @auth(level: USER) {
+  attendees(where: {userId: {eq_expr: "auth.uid"}}) {
+    status
+  }
+}
+
+mutation CreateReminder($appointmentId: UUID!, $triggerTime: Int!) @auth(level: USER) {
+  reminder_insert(data: {appointmentId: $appointmentId, triggerTime: $triggerTime})
+}
+
+mutation UpdateReminder($id: UUID!, $triggerTime: Int!) @auth(level: USER) {
+  reminder_update(key: {id: $id}, data: {triggerTime: $triggerTime})
+}
+
+mutation DeleteReminder($id: UUID!) @auth(level: USER) {
+  reminder_delete(key: {id: $id})
+}
+
+query GetReminder($id: UUID!) @auth(level: USER) {
+  reminder(id: $id) {
+    triggerTime
+  }
+}
+
+query ListReminders @auth(level: USER) {
+  reminders(where: {appointment: {userId: {eq_expr: "auth.uid"}}}) {
+    triggerTime
+  }
+}
